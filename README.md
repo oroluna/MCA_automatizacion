@@ -39,6 +39,7 @@ pi0
 ## Procesamiento de Archivos de entrada
 
 Utilizando la imagen que se encuentra en DockerHub:  docker pull wcsim/wcsim
+<https://hub.docker.com/r/wcsim/wcsim>
 
 1.- Identificar localizacion del archivo .mac a utilizar  
 2.- docker run -v <directorio host>:/tmp/wcsim -d -i -t --name WCSim wcsim/wcsim  
