@@ -59,8 +59,8 @@ docker container exec -it WCSim bash -c "cp /opt/HyperK/WCSim/wcsim.root /tmp/wc
 
 /mac_files/*.mac  
 /run/root/{particula}/{energia_sin_espacios}/*.root  
-/run/gz_single/{particula}/{energia_sin_espacios}/*.gz  
-/run/gz_group/{particula}/{energia_sin_espacios}/*.gz    (Integrando todas las corridas en un solo archivo)
+/gz_single/{particula}/{energia_sin_espacios}/*.gz  
+/gz_group/{particula}/{energia_sin_espacios}/*.gz    (Integrando todas las corridas en un solo archivo)
 
 
 {particula} = Los valores posibles son: e-_ ; e+_ ; mu+ ; mu- ; pi+ ; pi- ; pi0  
