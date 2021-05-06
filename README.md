@@ -51,19 +51,19 @@ docker container exec -it WCSim bash -c "cp /opt/HyperK/WCSim/wcsim.root /tmp/wc
 6.- Despues del paso anterior archivo .root generado ya deberia ser visible en su directorio local (<directorio host>)  
 
 
-## Estructura de directorios
+## Estructura de directorios  
 
-/mac_files/*.mac
-/run/root/{particula}/{energia_sin_espacios}/*.root
-/run/gz_single/{particula}/{energia_sin_espacios}/*.gz
-/run/gz_group/{particula}/{energia_sin_espacios}/*.gz
-
-
-{particula} = Los valores posibles son: e-_ ; e+_ ; mu+ ; mu- ; pi+ ; pi- ; pi0
-{energia_sin_espacios} = {energia} quitandole espacios en blanco que pudiera tener
+/mac_files/*.mac  
+/run/root/{particula}/{energia_sin_espacios}/*.root  
+/run/gz_single/{particula}/{energia_sin_espacios}/*.gz  
+/run/gz_group/{particula}/{energia_sin_espacios}/*.gz  
 
 
-## Casos de pruebas
+{particula} = Los valores posibles son: e-_ ; e+_ ; mu+ ; mu- ; pi+ ; pi- ; pi0  
+{energia_sin_espacios} = {energia} quitandole espacios en blanco que pudiera tener  
+
+
+## Casos de pruebas  
 
 
 
