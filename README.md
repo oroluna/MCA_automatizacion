@@ -40,15 +40,15 @@ pi0
 
 Utilizando la imagen que se encuentra en DockerHub:  docker pull wcsim/wcsim
 
-2.- Identificar localizacion del archivo .mac a utilizar
-1.- docker run -v <directorio host>:/tmp/wcsim -d -i -t --name WCSim wcsim/wcsim
-3.- Despues de este paso, el archivo <Nombre del archivo>.mac ya debe ser visible dentro del contenedor en el directorio /tmp/wcsim
-4.-  Ejecutar WCSim, con el comando:
-docker container exec -it WCSim bash -c "cd /opt/HyperK/WCSim; source ../env-WCSim.sh; WCSim /tmp/wcsim/WCSim.mac"
+1.- Identificar localizacion del archivo .mac a utilizar  
+2.- docker run -v <directorio host>:/tmp/wcsim -d -i -t --name WCSim wcsim/wcsim  
+3.- Despues de este paso, el archivo <Nombre del archivo>.mac ya debe ser visible dentro del contenedor en el directorio /tmp/wcsim  
+4.-  Ejecutar WCSim, con el comando:  
+docker container exec -it WCSim bash -c "cd /opt/HyperK/WCSim; source ../env-WCSim.sh; WCSim /tmp/wcsim/WCSim.mac"  
 Cuando se corre ese comando se genera el archivo /opt/HyperK/WCSim/wcsim.root dentro del contenedor
-5.- El ultimo paso seria copiar dicho archivo al directorio enlace (/tmp/wcsim):
-docker container exec -it WCSim bash -c "cp /opt/HyperK/WCSim/wcsim.root /tmp/wcsim"
-6.- Despues del paso anterior archivo .root generado ya deberia ser visible en su directorio local (<directorio host>)
+5.- El ultimo paso seria copiar dicho archivo al directorio enlace (/tmp/wcsim):  
+docker container exec -it WCSim bash -c "cp /opt/HyperK/WCSim/wcsim.root /tmp/wcsim"  
+6.- Despues del paso anterior archivo .root generado ya deberia ser visible en su directorio local (<directorio host>)  
 
 
 
