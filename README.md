@@ -69,6 +69,7 @@ docker container exec -it WCSim bash -c "cp /opt/HyperK/WCSim/wcsim.root /tmp/wc
 
 ## Casos de pruebas  
 
+### particula   /    Energia   /  Cantidad de corridas
 
 e-    100 MeV     200 MeV   500 MeV     10 corridas por cada parametro de energia  
 mu+   100 MeV     200 MeV   500 MeV     10 corridas por cada parametro de energia  
