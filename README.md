@@ -10,10 +10,10 @@ Estos archivos se encuentran en el directorio: /mac_files
 
 La nomenclatura que tendran estos archivos es:
 
-  wcs_/<espeficacion>_/<particula>_<energia>.mac
+  wcs_/<espeficacion>_/<particula>_<energia>.mac  
 
 
- <espeficacion> = longitud de 2 carateres
+ - <espeficacion> = longitud de 2 carateres
  <espeficacion> = Valores de 00 hasta 99, por omision 00.
   
   
