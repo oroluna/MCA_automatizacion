@@ -64,7 +64,7 @@ docker container exec -it WCSim bash -c "cp /opt/HyperK/WCSim/wcsim.root /tmp/wc
 
 
 {particula} = Los valores posibles son: e-_ ; e+_ ; mu+ ; mu- ; pi+ ; pi- ; pi0  
-{energia_sin_espacios} = {energia} quitandole espacios en blanco que pudiera tener  
+{energia_sin_espacios} = {energia} quitandole espacios en blanco que pudiera tener, y cambiarlos por _  
 
 
 ## Casos de pruebas  
