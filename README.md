@@ -13,8 +13,8 @@ La nomenclatura que tendran estos archivos es:
   wcs_<espeficacion>_<particula>_<energia>.mac
 
 
-<espeficacion> = longitud de 2 carateres
-<espeficacion> = Valores de 00 hasta 99, por omision 00.
+ <espeficacion> = longitud de 2 carateres
+ <espeficacion> = Valores de 00 hasta 99, por omision 00.
   
   
 <particula> = longitud tres caracteres
