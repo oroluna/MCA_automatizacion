@@ -76,5 +76,13 @@ mu+   100 MeV     200 MeV   500 MeV     10 corridas por cada parametro de energi
 mu-   100 MeV     200 MeV   500 MeV     10 corridas por cada parametro de energia  
 pi+   100 MeV     200 MeV   500 MeV     10 corridas por cada parametro de energia  
 
+## Automatización del Proceso
+
+1.- Para cada archivo .mac, mandarlo ejecutar con la funcion en Docker  
+2.- Para cada archivo generado .root ubicarlo en su carpeta correspondiente  
+3.- Para cada archivo root, ejecutar un proceso para crearlo un archivo compactado y ponerlo en la carpeta gz_single, es importante ubicarlo en su directorio correspondiente.  
+4.- Para cada grupo de archivos {particulo}{energia}, ejecutar un proceso para integrar todo el contenido en un archivo compactado y ponerlo en la carpeta gz_group, es importante ubicarlo en su directorio correspondiente.  (Nota a considerar,  una vez que se generen todos los archivos .root, se debera comenzar esta tarea)  
+5.- Utilizar la carpeta de scripts para ir poniendo su material a desarrollar.  
+
 
 
