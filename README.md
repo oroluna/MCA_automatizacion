@@ -10,7 +10,7 @@ Estos archivos se encuentran en el directorio: /mac_files
 
 La nomenclatura que tendran estos archivos es:
 
-  wcs_{espeficacion}_{particula}_{energia}.mac  
+  wcs_{espeficacion}_{particula}_{numero de corrida}_{energia}.mac  
 
 
  {espeficacion} = longitud de 2 carateres  
@@ -19,6 +19,9 @@ La nomenclatura que tendran estos archivos es:
   
 {particula} = longitud tres caracteres  
 {particula} = Los valores posibles son: e-_ ; e+_ ; mu+ ; mu- ; pi+ ; pi- ; pi0
+
+{numero de corrida} = longitud tres caracteres  
+{numero de corrida} = Valores desde 000 hasta 999
 
 {energia} = longitud maxima hasta 10 caracteres  
 {energia} = Valor numerico {Medida de energia}
@@ -57,7 +60,7 @@ docker container exec -it WCSim bash -c "cp /opt/HyperK/WCSim/wcsim.root /tmp/wc
 /mac_files/*.mac  
 /run/root/{particula}/{energia_sin_espacios}/*.root  
 /run/gz_single/{particula}/{energia_sin_espacios}/*.gz  
-/run/gz_group/{particula}/{energia_sin_espacios}/*.gz  
+/run/gz_group/{particula}/{energia_sin_espacios}/*.gz    (Integrando todas las corridas en un solo archivo)
 
 
 {particula} = Los valores posibles son: e-_ ; e+_ ; mu+ ; mu- ; pi+ ; pi- ; pi0  
@@ -65,6 +68,12 @@ docker container exec -it WCSim bash -c "cp /opt/HyperK/WCSim/wcsim.root /tmp/wc
 
 
 ## Casos de pruebas  
+
+
+e-    100 MeV     200 MeV   500 MeV     10 corridas por cada parametro de energia  
+mu+   100 MeV     200 MeV   500 MeV     10 corridas por cada parametro de energia  
+mu-   100 MeV     200 MeV   500 MeV     10 corridas por cada parametro de energia  
+pi+   100 MeV     200 MeV   500 MeV     10 corridas por cada parametro de energia  
 
 
 
