@@ -32,7 +32,7 @@
 /grdm/nucleusLimits 214 214 83 83 
 
 # Paramentros a ser modificados
-/WCSimIO/RootFile wcs_00_e-_009_100_MeV.root
+/WCSimIO/RootFile wcs_00_e-__009_100_MeV.root
 # Este tambien
 
 
