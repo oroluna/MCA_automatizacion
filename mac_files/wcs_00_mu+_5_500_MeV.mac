@@ -23,7 +23,7 @@
 /mygen/generator gun
 
 # Paramentros a ser modificados
-/gun/particle mu-
+/gun/particle mu+
 /gun/energy 500 MeV
 # Estos dos ...
 
@@ -32,7 +32,7 @@
 /grdm/nucleusLimits 214 214 83 83 
 
 # Paramentros a ser modificados
-/WCSimIO/RootFile wcs_00_mu-_008_500_MeV.root
+/WCSimIO/RootFile wcs_00_mu+_5_500_MeV.root
 # Este tambien
 
 
