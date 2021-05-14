@@ -1,0 +1,32 @@
+{
+    "particle_1": {
+        "specification": "01,02",
+        "name": "mu+",
+        "MeV": "100,200,500",
+        "simulations": "1000"
+    },
+    "particle_2": {
+        "specification": "01,02",
+        "name": "mu-",
+        "MeV": "100,200,500",
+        "simulations": "1000"
+    },
+    "particle_3": {
+        "specification": "01,02",
+        "name": "pi+",
+        "MeV": "12,24,36",
+        "simulations": "1000"
+    },
+    "particle_4": {
+        "specification": "01,02",
+        "name": "e+",
+        "MeV": "100,200,500",
+        "simulations": "1000"
+    },
+    "particle_5": {
+        "specification": "01,02",
+        "name": "e-",
+        "MeV": "100,200,500",
+        "simulations": "1000"
+    }
+}

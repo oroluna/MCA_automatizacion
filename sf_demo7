@@ -1,0 +1,70 @@
+
+# Paso 0, ejecutar el contenedor y asociar las carpetas fisicas y virtuales
+
+## Maquina casa
+#sudo docker run -v /home/forozco/Documentos/MCA_automatizacion-main/mac_files:/tmp/wcsim/mac_files -d -i -t --name WCSim wcsim/wcsim
+## IMPORTANTE, verificar la ruta correcta
+## Maquina trabajo
+#sudo docker run -v /home/felipe/Documents/MCA_automatizacion-main/mac_files:/tmp/wcsim/mac_files -d -i -t --name WCSim wcsim/wcsim
+#                   /home/felipe/Documents/MCA_automatizacion-main/mac_files
+
+especificacion = ['00']
+CORRIDA = range(0,9)
+#CORRIDA = ['9']
+
+rule all:
+   input:
+      expand('mac_files/wcs_{l_especificacion}_e-__{l_corrida}_100_MeV.mac', l_especificacion=especificacion, l_corrida=CORRIDA),
+      expand('run/root/e-_/100_MeV/wcs_{l_especificacion}_e-__{l_corrida}_100_MeV.root', l_especificacion=especificacion, l_corrida=CORRIDA),
+      expand('gz_single/e-_/100_MeV/wcs_{l_especificacion}_e-__{l_corrida}_100_MeV.root', l_especificacion=especificacion, l_corrida=CORRIDA)
+
+rule genera_datos_WCSim:
+   input:
+      "mac_files/wcs_{l_especificacion}_e-__{l_corrida}_100_MeV.mac"
+   output:
+      "run/root/e-_/100_MeV/wcs_{l_especificacion}_e-__{l_corrida}_100_MeV.root"
+   params:
+      "wcs_{l_especificacion}_e-__{l_corrida}_100_MeV.root"
+   shell:
+      """
+      docker container exec -it WCSim bash -c "cd /opt/HyperK/WCSim; source ../env-WCSim.sh; WCSim /tmp/wcsim/{input[0]}"
+      #sudo docker container exec -it WCSim bash -c "cd /opt/HyperK/WCSim; source ../env-WCSim.sh; WCSim /tmp/wcsim/mac_files/wcs_00_e-__0_100_MeV.mac"
+       docker container exec -it WCSim bash -c "mv /opt/HyperK/WCSim/{params} /tmp/wcsim/mac_files/{params}"
+      mv mac_files/{params} {output}
+      """
+
+rule comprime_datos_unico:
+   input:
+      "run/root/e-_/100_MeV/wcs_{l_especificacion}_e-__{l_corrida}_100_MeV.root"
+   output:
+      "gz_single/e-_/100_MeV/wcs_{l_especificacion}_e-__{l_corrida}_100_MeV.root"
+   shell:
+      """
+        cp -u {input} {output}
+        cat {input} | gzip > {output}.gz
+      """
+
+
+# Poner este archivo en la raiz del proyecto:  MCA_automatizacion-main
+# Mandarlo ejecutar con la siguiente instruccion,
+
+# Instalar htop
+
+#Demostracion 1,  Seleccionado una sola CORRIDA
+ #sudo snakemake --snakefile sf_demo4  --forceall
+
+#Demostracion 2,  9 CORRIDAS
+#sudo snakemake --snakefile sf_demo4  --forceall
+
+#Demostracion 3,  9 CORRIDAS  - Usando N cores
+#sudo snakemake --cores 10 --snakefile sf_demo4 --forceall
+
+#Demostracion 4,  9 CORRIDAS  - Usando N cores, visualizacion sencilla
+#sudo snakemake --dag --cores 10 --snakefile sf_demo4 --forceall | dot -Tsvg > dag.svg
+#Nota: la primera que que corran este comando les va a pedir que instalen
+#sudo apt install graphviz
+
+#Demostracion 5,  9 CORRIDAS  - Usando N cores, visualizacion sencilla, sin forzarlo
+#sudo snakemake --dag --cores 10 --snakefile sf_demo4 | dot -Tsvg > dag.svg
+# Si modifican un archivo .MAC, y al ejecutar nuevamente este comando,
+# veran que snakemake identifica el cambio

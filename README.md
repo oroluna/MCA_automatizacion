@@ -46,7 +46,7 @@ Utilizando la imagen que se encuentra en DockerHub:  docker pull wcsim/wcsim
 
 1.- Identificar localizacion del archivo .mac a utilizar  
 2.- Enlazar el directorio de archivos .mac en docker
-**docker run -v `<directorio host>` :/tmp/wcsim -d -i -t --name WCSim wcsim/wcsim**  
+**docker run -v `<directorio host>` :/tmp/wcsim/mac_files -d -i -t --name WCSim wcsim/wcsim**  
 3.- Despues de este paso, el archivo `<Nombre del archivo>`.mac ya debe ser visible dentro del contenedor en el directorio /tmp/wcsim  
 4.- Ejecutar la aplicacion WCSim que esta en el contenedor con el comando:  
 **docker container exec -it WCSim bash -c "cd /opt/HyperK/WCSim; source ../env-WCSim.sh; WCSim /tmp/wcsim/`<Nombre del archivo>`.mac"**  
