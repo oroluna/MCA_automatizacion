@@ -18,10 +18,9 @@
 /DarkRate/SetDarkLow 0
 /DarkRate/SetDarkWindow 4000
 
-# aqui
 /mygen/generator gun
 /gun/particle @particle
-/gun/energy @energy MeV
+/gun/energy @energy_value @energy_unit
 
 /gun/direction 1 0 0 
 /gun/position 0 0 0  

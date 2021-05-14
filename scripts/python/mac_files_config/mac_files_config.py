@@ -139,44 +139,88 @@ def _empty_results_path():
 def _generate_particle_mac(particle, iterations, add_zeros, iteration_digits,
                            destination_path, base_mac):
     """Generate the .mac files with all the particle combinations."""
+    specification_list = [  # Split elements and remove white spaces
+        i.strip() for i in particle['specification'].split(',')
+    ]
     particle_name = particle['name']
-    energy_list = particle['MeV'].split(',')
-    specification_list = particle['specification'].split(',')
+    energy_list = particle['energy']
     simulations = particle['simulations']
     creation_count = 0
     print(f'Generating the .mac files for particle "{particle_name}"...')
 
     for specification in specification_list:
-        for energy in energy_list:
-            for run_number in range(iterations):
-                if add_zeros:  # Add zeros to the left size of number
-                    run_number = _add_left_zeros(run_number, iteration_digits)
-                mac_name = (
-                    f'wcs_{specification}_{particle_name}__{run_number}'
-                    f'_{energy}_MeV'
+        for energy_unit, energy_levels in energy_list.items():
+            # Split the energy level list in config JSON (separated by commas)
+            energy_levels = [
+                i.strip() for i in energy_levels.split(',')
+            ]
+            for energy in energy_levels:
+                new_files_number = _create_mac_files(
+                    iterations, add_zeros, iteration_digits, destination_path,
+                    base_mac, {
+                        'specification': specification,
+                        'particle_name': particle_name,
+                        'energy': energy,
+                        'energy_unit': energy_unit,
+                        'simulations': simulations
+                    }
                 )
-                replacing_dict = {
-                    '@particle': particle_name,
-                    '@energy': energy,
-                    '@output_name': mac_name,
-                    '@simulations': simulations
-                }
-                new_mac_file = os.path.join(RESULTS_PATH, f'{mac_name}.mac')
-                _replace_string_in_file(
-                    base_mac, new_mac_file, replacing_dict
-                )
-                _copy_new_mac_file(
-                    new_mac_file, f'{mac_name}.mac', destination_path
-                )
-                creation_count += 1
+                creation_count += new_files_number
     print(f'{creation_count} files were created for "{particle_name}" '
           'particle.')
 
 
-def _add_left_zeros(number, iteration_digits):
-    """Add zeros to the left side of the number.
+def _create_mac_files(iterations, add_zeros, iteration_digits,
+                      destination_path, base_mac, metrics):
+    """Create a .mac with metrics given, the given number of iterations."""
+    _validate_integer_metrics({  # Check set metrics are integers
+        'energy': metrics["energy"], 'simulations': metrics['simulations']
+    })
+    count = 0
+    for run_number in range(iterations):
+        if add_zeros:  # Add zeros to the left size of number
+            run_number = _add_left_zeros(run_number, iteration_digits)
+        mac_name = (  # Set the name for .mac (and .root) file
+            f'wcs_{metrics["specification"]}_{metrics["particle_name"]}'
+            f'__{run_number}_{metrics["energy"]}_{metrics["energy_unit"]}'
+        )
+        # Dictionary containing .mac placeholders (left) and their values
+        # to be replaced (right)
+        replacing_dict = {
+            '@particle': metrics['particle_name'],
+            '@energy_value': metrics['energy'],
+            '@energy_unit': metrics['energy_unit'],
+            '@output_name': mac_name,
+            '@simulations': metrics['simulations']
+        }
+        # Set the new .mac file path
+        new_mac_file = os.path.join(RESULTS_PATH, f'{mac_name}.mac')
+        _replace_string_in_file(
+            base_mac, new_mac_file, replacing_dict
+        )
+        _copy_new_mac_file(  # Copy new file in custom destination
+            new_mac_file, f'{mac_name}.mac', destination_path
+        )
+        count += 1
+    return count
 
-    Zeros will be added according to missing spaces until ITERATIONS_DIGITS are
+
+def _validate_integer_metrics(metrics):
+    """Validate elements of a list of metrics are integers."""
+    for metric_name, metric_value in metrics.items():
+        try:
+            int(metric_value)
+        except ValueError:
+            _print_error(
+                f'Metric "{metric_name}" must contain integers only. '
+                f'Incorrect value: "{metric_value}".'
+            )
+
+
+def _add_left_zeros(number, iteration_digits):
+    """Add zeros to the left side of the experiment run number.
+
+    Zeros will be added according to missing spaces until iterations_digits are
     reached.
     """
     number = str(number)
