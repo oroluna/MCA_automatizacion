@@ -24,7 +24,7 @@
 
 # Paramentros a ser modificados
 /gun/particle mu-
-/gun/energy 100 MeV
+/gun/energy 200 MeV
 # Estos dos ...
 
 /gun/direction 1 0 0 
@@ -32,7 +32,7 @@
 /grdm/nucleusLimits 214 214 83 83 
 
 # Paramentros a ser modificados
-/WCSimIO/RootFile wcs_00_mu-__007_100_MeV.root
+/WCSimIO/RootFile wcs_00_mu-__00_200_MeV.root
 # Este tambien
 
 
