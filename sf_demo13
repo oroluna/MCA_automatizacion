@@ -1,0 +1,90 @@
+report: "report/workflow.rst"
+NUMBER_OF_FILES=10
+
+# Paso 0, ejecutar el contenedor y asociar las carpetas fisicas y virtuales
+
+## Maquina casa
+#sudo docker run -v /home/forozco/Documentos/MCA_automatizacion-main/mac_files:/tmp/wcsim/mac_files -d -i -t --name WCSim wcsim/wcsim
+## IMPORTANTE, verificar la ruta correcta
+## Maquina trabajo
+#sudo docker run -v /home/felipe/Documents/MCA_automatizacion-main/mac_files:/tmp/wcsim/mac_files -d -i -t --name WCSim wcsim/wcsim
+#                   /home/felipe/Documents/MCA_automatizacion-main/mac_files
+
+especificacion = ['00']
+CORRIDA = range(0,101)
+#CORRIDA = ['9']
+#particula = ['pi+_']
+#particula = ['e+_','e-_','mu+_','mu-_', 'pi+_']
+#particula_r = ['pi+']
+#particula_r = ['mu+']
+particula_r = ['e+','e-','mu+','mu-','pi+']
+energia = ['100_MeV','200_MeV','500_MeV']
+
+rule all:
+   input:
+      report(expand('mac_files/wcs_{l_especificacion}_{l_particula_r}__{l_corrida}_{l_energia}.mac', l_especificacion=especificacion, l_particula_r=particula_r, l_corrida=CORRIDA, l_energia=energia), category="input_files"),
+      report(expand('run/root/{l_particula_r}/{l_energia}/wcs_{l_especificacion}_{l_particula_r}__{l_corrida}_{l_energia}.root',  l_particula_r=particula_r, l_especificacion=especificacion,  l_corrida=CORRIDA, l_energia=energia), category="output_files"),
+      expand('gz_single/{l_particula_r}/{l_energia}/wcs_{l_especificacion}_{l_particula_r}__{l_corrida}_{l_energia}.root', l_particula_r=particula_r, l_especificacion=especificacion, l_corrida=CORRIDA, l_energia=energia),
+      expand('gz_single/{l_particula_r}/{l_energia}/wcs_{l_especificacion}_{l_particula_r}__{l_corrida}_{l_energia}.root.gz', l_particula_r=particula_r, l_especificacion=especificacion, l_corrida=CORRIDA, l_energia=energia)
+
+rule genera_datos_WCSim:
+   input:
+      "mac_files/wcs_{l_especificacion}_{l_particula_r}__{l_corrida}_{energia}.mac"
+   output:
+      "run/root/{l_particula_r}/{l_energia}/wcs_{l_especificacion}_{l_particula_r}__{l_corrida}_{energia}.root"
+   params:
+      "wcs_{l_especificacion}_{l_particula_r}__{l_corrida}_{energia}.root"
+   shell:
+      """
+      sudo docker container exec -it WCSim bash -c "cd /opt/HyperK/WCSim; source ../env-WCSim.sh; WCSim /tmp/wcsim/{input[0]}"
+      sudo docker container exec -it WCSim bash -c "mv /opt/HyperK/WCSim/{params} /tmp/wcsim/mac_files/{params}"
+      sudo chmod 777 mac_files/{params}
+      mv mac_files/{params} {output}
+
+      #wcs_00_pi+__4_500_MeV.root
+      #sudo docker container exec -it WCSim bash -c "cd /opt/HyperK/WCSim; source ../env-WCSim.sh; WCSim /tmp/wcsim/mac_files/wcs_00_pi+__4_500_MeV.mac"
+      #sudo docker container exec -it WCSim bash -c "mv /opt/HyperK/WCSim/wcs_00_pi+__4_500_MeV.root /tmp/wcsim/mac_files/wcs_00_pi+__4_500_MeV.root"
+      #mv mac_files/wcs_00_pi+__4_500_MeV.root wcs_00_pi+__4_500_MeV.root
+      """
+
+rule comprime_datos_unico:
+   input:
+      "run/root/{l_particula_r}/{l_energia}/wcs_{l_especificacion}_{l_particula_r}__{l_corrida}_{l_energia}.root"
+   output:
+      "gz_single/{l_particula_r}/{l_energia}/wcs_{l_especificacion}_{l_particula_r}__{l_corrida}_{l_energia}.root.gz"
+   params:
+      "gz_single/{l_particula_r}/{l_energia}/wcs_{l_especificacion}_{l_particula_r}__{l_corrida}_{l_energia}.root"
+   shell:
+      """
+        cp {input} {params}
+        cat {params} | gzip > {output}
+        rm {params}
+      """
+
+
+
+# Poner este archivo en la raiz del proyecto:  MCA_automatizacion-main
+# Mandarlo ejecutar con la siguiente instruccion,
+ #sudo snakemake --snakefile sf_demo3   --forceall
+#sudo snakemake --cores 10  --snakefile sf_demo12 --forceall
+#sudo snakemake --cores 5 --snakefile sf_demo3 --forceall --batch genera_datos_WCSim
+
+# Para probar la funcionalidad basica de reportes en imagenes
+#$ snakemake --dag sorted_reads/{A,B}.bam.bai | dot -Tsvg > dag.svg
+##sudo snakemake --dag --cores 10  --snakefile sf_demo6 --forceall | dot -Tsvg > dag.svg
+
+#la primera que que corran este comando les va a pedir que instalen
+#sudo apt install graphviz
+
+
+ # Este es un ejemplo DUMMY,
+ # Verificar que se crea un archivo root, que es el resultado de un copy
+ # Lo importante es que se debe tomar este ejemplo
+
+
+
+#wcs_00_pi+__22_100_MeV.root
+#wcs_00_pi+__21_100_MeV.root
+
+#  snakemake --cores 10  --snakefile sf_demo12 --forceall
+#snakemake --cores 10  --snakefile sf_demo12 --forceall --report report.html
