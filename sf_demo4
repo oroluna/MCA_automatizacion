@@ -9,35 +9,36 @@
 #                   /home/felipe/Documents/MCA_automatizacion-main/mac_files
 
 especificacion = ['00']
+particulas = ['mu-', 'mu+']
 CORRIDA = range(0,9)
 #$CORRIDA = ['9']
 
 rule all:
    input:
-      expand('mac_files/wcs_{l_especificacion}_e-__{l_corrida}_100_MeV.mac', l_especificacion=especificacion, l_corrida=CORRIDA),
-      expand('run/root/e-_/100_MeV/wcs_{l_especificacion}_e-__{l_corrida}_100_MeV.root', l_especificacion=especificacion, l_corrida=CORRIDA),
-      expand('gz_single/e-_/100_MeV/wcs_{l_especificacion}_e-__{l_corrida}_100_MeV.root', l_especificacion=especificacion, l_corrida=CORRIDA)
+      expand('mac_files/wcs_{l_especificacion}_{l_particulas}__{l_corrida}_100_MeV.mac', l_especificacion=especificacion, l_corrida=CORRIDA),
+      expand('run/root/{l_particulas}_/100_MeV/wcs_{l_especificacion}_{l_particulas}__{l_corrida}_100_MeV.root', l_especificacion=especificacion, l_corrida=CORRIDA),
+      expand('gz_single/{l_particulas}_/100_MeV/wcs_{l_especificacion}_{l_particulas}__{l_corrida}_100_MeV.root', l_especificacion=especificacion, l_corrida=CORRIDA)
 
 rule genera_datos_WCSim:
    input:
-      "mac_files/wcs_{l_especificacion}_e-__{l_corrida}_100_MeV.mac"
+      "mac_files/wcs_{l_especificacion}_{l_particulas}__{l_corrida}_100_MeV.mac"
    output:
-      "run/root/e-_/100_MeV/wcs_{l_especificacion}_e-__{l_corrida}_100_MeV.root"
+      "run/root/{l_particulas}_/100_MeV/wcs_{l_especificacion}_{l_particulas}__{l_corrida}_100_MeV.root"
    params:
-      "wcs_{l_especificacion}_e-__{l_corrida}_100_MeV.root"
+      "wcs_{l_especificacion}_{l_particulas}__{l_corrida}_100_MeV.root"
    shell:
       """
       docker container exec -it WCSim bash -c "cd /opt/HyperK/WCSim; source ../env-WCSim.sh; WCSim /tmp/wcsim/{input[0]}"
-      #sudo docker container exec -it WCSim bash -c "cd /opt/HyperK/WCSim; source ../env-WCSim.sh; WCSim /tmp/wcsim/mac_files/wcs_00_e-__0_100_MeV.mac"
+      #sudo docker container exec -it WCSim bash -c "cd /opt/HyperK/WCSim; source ../env-WCSim.sh; WCSim /tmp/wcsim/mac_files/wcs_00_{l_particulas}__0_100_MeV.mac"
        docker container exec -it WCSim bash -c "mv /opt/HyperK/WCSim/{params} /tmp/wcsim/mac_files/{params}"
       mv mac_files/{params} {output}
       """
 
 rule comprime_datos_unico:
    input:
-      "run/root/e-_/100_MeV/wcs_{l_especificacion}_e-__{l_corrida}_100_MeV.root"
+      "run/root/{l_particulas}_/100_MeV/wcs_{l_especificacion}_{l_particulas}__{l_corrida}_100_MeV.root"
    output:
-      "gz_single/e-_/100_MeV/wcs_{l_especificacion}_e-__{l_corrida}_100_MeV.root"
+      "gz_single/{l_particulas}_/100_MeV/wcs_{l_especificacion}_{l_particulas}__{l_corrida}_100_MeV.root"
    shell:
       """
         cp -u {input} {output}
